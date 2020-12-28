@@ -97,7 +97,7 @@ func (g *Game) Update() error {
 
 // Render a frame
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(color.RGBA{0, 0, 0, 255})
+	screen.Fill(color.RGBA{20, 20, 20, 255})
 
 	g.bar.Draw(screen)
 	if g.ball != nil {
