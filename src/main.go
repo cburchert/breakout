@@ -69,6 +69,7 @@ func (g *Game) CheckCollisions() {
 			g.ball.BounceFromCollision(collisionType)
 			if collisionType != NotColliding {
 				g.stones.Remove(s)
+				g.score++
 			}
 		}
 
