@@ -10,7 +10,7 @@ const (
 	defaultBarWidth         = 400
 	defaultBarSpeed         = 1920
 	barHeight               = 40
-	barY            float64 = 1000
+	barY            float64 = 950
 )
 
 var (

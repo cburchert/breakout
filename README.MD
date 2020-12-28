@@ -4,6 +4,8 @@ This is a simple Breakout game in Go.
 
 It works both compiled for a desktop PC or to WebAssembly. You can play it directly in your browser [here](https://cburchert.github.io/breakout/index.html).
 
+All real code is in the `src/` subfolder.
+
 ## Running Manually
 
 To quickly test changes, you can run as a desktop application:

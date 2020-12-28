@@ -110,6 +110,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for s := g.stones.Front(); s != nil; s = s.Next() {
 		s.Value.(*Stone).Draw(screen)
 	}
+
+	if g.ball == nil {
+		DrawStartHint(screen)
+	}
+
+	DrawBottomBar(screen)
 }
 
 // Returns the size of the viewport we would like for any given size of the screen.
