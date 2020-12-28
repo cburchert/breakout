@@ -1,4 +1,4 @@
 #!/bin/bash
 
-GOOS=js GOARCH=wasm go build -o web/breakout.wasm
-cp $(go env GOROOT)/misc/wasm/wasm_exec.js web/
+GOOS=js GOARCH=wasm go build -o generated/breakout.wasm src/*.go
+cp $(go env GOROOT)/misc/wasm/wasm_exec.js generated/
