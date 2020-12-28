@@ -6,15 +6,37 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-var (
-	stoneImage *ebiten.Image
+const (
+	stoneImageW          = 120
+	stoneImageH          = 50
+	stoneBorderThickness = 2
 )
 
-const ()
+var (
+	stoneColor       = color.RGBA{100, 100, 100, 255}
+	stoneBorderColor = color.RGBA{0, 0, 0, 255}
+	stoneImage       *ebiten.Image
+)
 
 func init() {
-	stoneImage = ebiten.NewImage(200, 100)
-	stoneImage.Fill(color.RGBA{50, 50, 50, 255})
+	MakeStoneImage()
+}
+
+func MakeStoneImage() {
+	stoneImage = ebiten.NewImage(stoneImageW, stoneImageH)
+	stoneImage.Fill(stoneColor)
+	for x := 0; x < stoneBorderThickness; x++ {
+		for y := 0; y < stoneImageH; y++ {
+			stoneImage.Set(x, y, stoneBorderColor)
+			stoneImage.Set(stoneImageW-x-1, y, stoneBorderColor)
+		}
+	}
+	for x := 0; x < stoneImageW; x++ {
+		for y := 0; y < stoneBorderThickness; y++ {
+			stoneImage.Set(x, y, stoneBorderColor)
+			stoneImage.Set(x, stoneImageH-y-1, stoneBorderColor)
+		}
+	}
 }
 
 type Stone struct {
