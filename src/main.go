@@ -27,16 +27,21 @@ type Game struct {
 	bar    *Bar
 	ball   *Ball
 	stones *list.List
+
+	score int
+	lives int
 }
 
 func NewGame() *Game {
-	g := &Game{NewBar(), nil, list.New()}
+	g := &Game{NewBar(), nil, list.New(), 0, 0}
 	g.Restart()
 	return g
 }
 
 func (g *Game) Restart() {
 	g.SpawnStones()
+	g.score = 0
+	g.lives = 3
 }
 
 func (g *Game) SpawnStones() {
@@ -79,6 +84,10 @@ func (g *Game) CheckCollisions() {
 			g.ball.dy *= -1
 		} else if g.ball.y > screenH {
 			g.ball = nil
+			g.lives -= 1
+			if g.lives == 0 {
+				g.Restart()
+			}
 		}
 	}
 }
@@ -115,7 +124,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		DrawStartHint(screen)
 	}
 
-	DrawBottomBar(screen)
+	DrawBottomBar(screen, g.score, g.lives)
 }
 
 // Returns the size of the viewport we would like for any given size of the screen.

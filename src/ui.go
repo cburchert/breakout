@@ -1,7 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
+	"image"
 	"image/color"
+	_ "image/png"
 	"log"
 
 	data "github.com/cburchert/breakout/src/data/generated"
@@ -15,15 +19,18 @@ var (
 	bottomBarBorderColor  = color.RGBA{150, 150, 150, 255}
 	bottomBarBorderHeight = 2.
 	bottomBarHeight       = 30.
+	heartSize             = 20.
 
 	defaultFontFace24    font.Face
 	defaultFontFace18    font.Face
 	startHint            ScreenText
 	bottomBarBorderImage *ebiten.Image
+	heartImage           *ebiten.Image
 )
 
 func init() {
 	initFonts()
+	initHeartImage()
 	initStartHint()
 	initBottomBarBorder()
 }
@@ -43,6 +50,14 @@ func initFonts() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initHeartImage() {
+	img, _, err := image.Decode(bytes.NewReader(data.Heart_png))
+	if err != nil {
+		log.Fatal(err)
+	}
+	heartImage = ebiten.NewImageFromImage(img)
 }
 
 func initStartHint() {
@@ -100,7 +115,28 @@ func DrawHelpText(screen *ebiten.Image) {
 	txt.Draw(screen)
 }
 
-func DrawBottomBar(screen *ebiten.Image) {
+func DrawScore(screen *ebiten.Image, score int) {
+	txt := ScreenText{
+		x:        screenW/2 - 30,
+		y:        screenH - bottomBarHeight + 8,
+		text:     fmt.Sprintf("Score: %d", score),
+		fontface: &defaultFontFace18,
+		color:    color.White}
+	txt.Draw(screen)
+}
+
+func DrawLives(screen *ebiten.Image, lives int) {
+	for i := 0; i < lives; i++ {
+		op := ebiten.DrawImageOptions{}
+		imgW, _ := heartImage.Size()
+		op.GeoM.Scale(heartSize/float64(imgW), heartSize/float64(imgW))
+		x := screenW - 100 + float64(i)*(heartSize+10)
+		op.GeoM.Translate(x, screenH-bottomBarHeight+8)
+		screen.DrawImage(heartImage, &op)
+	}
+}
+
+func DrawBottomBar(screen *ebiten.Image, score int, lives int) {
 	// Border
 	op := ebiten.DrawImageOptions{}
 	op.GeoM.Scale(screenW, bottomBarBorderHeight)
@@ -116,4 +152,6 @@ func DrawBottomBar(screen *ebiten.Image) {
 
 	// Help Text
 	DrawHelpText(screen)
+	DrawScore(screen, score)
+	DrawLives(screen, lives)
 }

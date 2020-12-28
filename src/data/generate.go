@@ -1,4 +1,5 @@
 //go:generate file2byteslice -package=data -input=./mplus-1p-regular.ttf -output=./generated/mplus-1p-regular.go -var=MPlus1PRegular_ttf
+//go:generate file2byteslice -package=data -input=./heart.png -output=./generated/heart.go -var=Heart_png
 
 package resources
 
