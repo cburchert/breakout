@@ -19,6 +19,10 @@ const (
 	fps = 60
 )
 
+var (
+	screenBackgroundColor = color.RGBA{20, 20, 20, 255}
+)
+
 type Game struct {
 	bar    *Bar
 	ball   *Ball
@@ -97,7 +101,7 @@ func (g *Game) Update() error {
 
 // Render a frame
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(color.RGBA{20, 20, 20, 255})
+	screen.Fill(screenBackgroundColor)
 
 	g.bar.Draw(screen)
 	if g.ball != nil {
