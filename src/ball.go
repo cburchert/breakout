@@ -11,8 +11,9 @@ var (
 )
 
 const (
-	ballRadius         = 10
-	ballSpeed  float64 = 500
+	ballRadius               = 10
+	ballSpeed        float64 = 500
+	ballAcceleration         = 1.001
 )
 
 func init() {
@@ -30,6 +31,8 @@ type Ball struct {
 func (b *Ball) Update() {
 	b.x += b.dx / fps
 	b.y += b.dy / fps
+	b.dx *= ballAcceleration
+	b.dy *= ballAcceleration
 }
 
 func (b *Ball) Draw(screen *ebiten.Image) {
