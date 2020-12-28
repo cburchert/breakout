@@ -4,6 +4,7 @@ import (
 	"container/list"
 	"image/color"
 	"log"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -61,7 +62,14 @@ func (g *Game) CheckCollisions() {
 	if g.ball != nil {
 		ballBoundingBox := g.ball.BoundingBox()
 		// Ball vs bar
-		g.ball.BounceFromCollision(g.bar.BoundingBox().CollisionCase(ballBoundingBox))
+		collisionType := g.bar.BoundingBox().CollisionCase(ballBoundingBox)
+		g.ball.BounceFromCollision(collisionType)
+		if collisionType == CollidingFromTop {
+			// Position on the bar where we bounced with range [0, 1] from left to right.
+			relativeBouncePosition := (g.ball.x - g.bar.x + ballRadius*2) / (g.bar.w + ballRadius*4)
+			newAngle := (1 + relativeBouncePosition) * math.Pi
+			g.ball.SetAngle(newAngle)
+		}
 
 		// Ball vs stones
 		for s := g.stones.Front(); s != nil; s = s.Next() {

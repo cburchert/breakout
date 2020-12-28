@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -56,4 +57,12 @@ func (b *Ball) BounceFromCollision(t CollisionType) {
 
 func (b *Ball) BoundingBox() Rectangle {
 	return Rectangle{b.x, b.y, ballRadius * 2, ballRadius * 2}
+}
+
+// SetAngle makes the ball go into a specific direction while keeping the same speed.
+// The angle is in radians, zero angle points along the positive X axis.
+func (b *Ball) SetAngle(angle float64) {
+	speed := math.Sqrt(b.dx*b.dx + b.dy*b.dy)
+	b.dx = speed * math.Cos(angle)
+	b.dy = speed * math.Sin(angle)
 }
